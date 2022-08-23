@@ -33,7 +33,7 @@ function NewNote() {
     try {
       console.log(details);
       const user = await axios.post(
-        `/newnote/:${author}`,
+        `http://localhost:5000/api/newnote/:${author}`,
         notedetails
       );
       user.data && window.location.replace("/notes");
@@ -45,10 +45,10 @@ function NewNote() {
   return (
     <div>
       <div>
-        <div className="flex flex-col items-center min-h-screen pt-6 bg-gray-100 sm:justify-center sm:pt-0">
-          <div className="w-full px-16 py-20 mb-6 mt-6 overflow-hidden bg-white rounded-lg lg:max-w-4xl">
+        <div className="flex flex-col items-center min-h-screen bg-gray-100 justify-center sm:pt-0">
+          <div className="w-full sm:px-16 sm:py-20 xs:px-8 xs:pt-20 overflow-hidden xs:min-h-screen xs:my-auto sm:h-max bg-white rounded-lg lg:max-w-4xl">
             <div className="mb-4">
-              <h1 className="font-serif text-3xl text-4xl decoration-gray-400">
+              <h1 className="font-serif text-4xl decoration-gray-400">
                 Write Note
               </h1>
             </div>
@@ -65,12 +65,12 @@ function NewNote() {
                   </label>
 
                   <input
-                    className="block w-full py-3 px-3 mt-1  rounded-md shadow-sm placeholder:text-gray-400 placeholder:text-right focus:border-gray-300 focus:ring focus:ring-gray-700 focus:ring-opacity-50"
+                    className="block w-full py-3 px-3 mt-1  rounded-md shadow-sm placeholder:text-gray-400 placeholder:text-right focus:outline-none focus:border-b focus:border-b-black focus:ring-white focus:ring-opacity-50"
                     type="text"
                     autoComplete="off"
                     onChange={handleChange}
                     name="title"
-                    maxLength={20}
+                    maxLength={30}
                     placeholder="20"
                   />
                 </div>
@@ -86,9 +86,11 @@ function NewNote() {
                   <textarea
                     name="description"
                     onChange={handleChange}
-                    className="block w-full py-3 px-3 mt-1 rounded-md shadow-sm placeholder:text-gray-400 placeholder:text-right focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    className="block w-full py-3 px-3 mt-1 rounded-md shadow-sm placeholder:text-gray-400 placeholder:text-right focus:outline-none focus:border-b focus:border-b-black  focus:ring-opacity-50"
                     rows="5"
                     placeholder="400"
+                    maxLength={400}
+                    style={{resize: "none"}}
                   ></textarea>
                 </div>
 
@@ -96,13 +98,13 @@ function NewNote() {
                   <button
                     type="submit"
                     onClick={handleSubmit}
-                    className="px-6 py-2 text-sm font-semibold rounded-md shadow-md text-sky-100 bg-sky-500 hover:bg-sky-700 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300"
+                    className="px-6 py-2 text-sm font-semibold rounded-md shadow-md text-sky-100 bg-blue-800 hover:bg-blue-500 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300"
                   >
                     Create
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2 text-sm font-semibold text-gray-100 bg-gray-400 rounded-md shadow-md hover:bg-gray-600 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300"
+                    className="px-6 py-2 text-sm font-semibold text-black bg-gray-200 rounded-md shadow-md hover:bg-gray-400 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300"
                   >
                     Cancel
                   </button>

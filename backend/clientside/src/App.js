@@ -2,11 +2,6 @@ import { useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import Footer from "./Components/Footer";
 import Header from "./Components/Header";
-// import EditNote from './Pages/EditNote';
-// import NewNote from "./Pages/NewNote";
-// import Login from './Pages/Login'
-// import Notes from './Pages/Notes';
-// import Register from './Pages/Register';
 
 function App() {
   const [user, setUser] = useState({});

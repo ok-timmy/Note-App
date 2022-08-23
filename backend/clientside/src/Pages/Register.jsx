@@ -41,7 +41,7 @@ function Register() {
     try {
       console.log(details);
       const user = await axios.post(
-        "/auth/register",
+        "http://localhost:5000/api/auth/register",
         details
       );
       user.data && window.location.replace("/login");
