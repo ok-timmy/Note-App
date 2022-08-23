@@ -44,13 +44,13 @@ function Header({ prop }) {
               userdata.constructor === Object ? (
                 <div className="hidden sm:flex flex-row space-x-4 justify-center items-center">
                   <Link to="/register">
-                    <button className="rounded-md flex space-x-2 w-24 h-10 font-normal text-sm leading-3 text-white bg-transparent border border-white focus:outline-none hover:bg-white hover:text-blue-800 duration-150 justify-center items-center">
+                    <button className="rounded-md flex space-x-2 w-24 h-10 font-normal text-sm leading-3 text-white bg-transparent border border-white focus:outline-none hover:bg-white hover:text-blue-800 duration-150 justify-center items-center focus:text-white focus:bg-transparent">
                       Sign Up
                     </button>
                   </Link>
 
                   <Link to="/login">
-                    <button className="rounded-md flex space-x-2 w-24 h-10 font-normal text-sm leading-3 text-white bg-transparent border border-white  hover:text-blue-800 hover:bg-white duration-150 justify-center items-center">
+                    <button className="rounded-md flex space-x-2 w-24 h-10 font-normal text-sm leading-3 text-white bg-transparent border border-white  hover:text-blue-800 hover:bg-white duration-150 justify-center items-center focus:text-white focus:bg-transparent">
                       Login
                     </button>
                   </Link>
@@ -62,7 +62,7 @@ function Header({ prop }) {
                   </span>
                   <button
                     onClick={signout}
-                    className="px-4 py-2 text-blue-100 bg-transparent border border-white rounded-md hover:bg-white hover:text-blue-800"
+                    className="px-4 py-2 text-blue-100 bg-transparent border border-white rounded-md hover:bg-white hover:text-blue-800 focus:text-white focus:bg-transparent"
                   >
                     Log out
                   </button>{" "}
@@ -141,26 +141,26 @@ function Header({ prop }) {
               userdata.constructor === Object ? (
                 <div className="flex flex-col gap-4 mt-4 w-80 mx-auto ">
                   <Link to="/register">
-                    <button className="rounded-md flex space-x-2 w-full h-10 font-normal text-sm leading-3 text-white bg-transparent border-white focus:outline-none focus:bg-white justify-center items-center">
+                    <button className="rounded-md flex space-x-2 w-full h-10 font-normal text-sm leading-3 text-white bg-transparent border-white focus:outline-none focus:bg-white justify-center items-center focus:text-white focus:bg-transparent">
                       Sign Up
                     </button>
                   </Link>
 
                   <Link to="/login">
-                    <button className="rounded-md flex space-x-2 w-full h-10 font-normal text-sm leading-3 text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white focus:bg-white  justify-center items-center">
+                    <button className="rounded-md flex space-x-2 w-full h-10 font-normal text-sm leading-3 text-white bg-transparent focus:outline-none focus:ring-white focus:bg-white  justify-center items-center focus:text-white focus:bg-transparent">
                       Sign In
                     </button>
                   </Link>
                 </div>
               ) : (
-                <div className="flex flex-col gap-4 mt-4 w-80 mx-auto ">
+                <div className="flex flex-col text-white gap-4 mt-4 w-80 mx-auto ">
                   <span className="mr-2">
                     Hello, {userdata.name.split(" ")[0]}
                   </span>
 
                   <button
                     onClick={signout}
-                    className="rounded-md flex space-x-2 w-full h-10 font-normal text-sm leading-3 text-white bg-transparent border-white focus:outline-none focus:bg-white justify-center items-center"
+                    className="rounded-md flex space-x-2 w-full h-10 font-normal text-sm leading-3 text-white bg-transparent border-white focus:outline-none focus:bg-white focus:text-blue-800 justify-center items-center"
                   >
                     Log out
                   </button>

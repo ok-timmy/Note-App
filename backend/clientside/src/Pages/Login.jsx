@@ -41,7 +41,7 @@ function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center xs:h-auto xs:py-48 md:min-h-screen bg-gray-100">
       <div className="px-8 py-6 lg:w-auto xs:w-96 text-left bg-white shadow-lg">
         <h3 className="text-2xl font-bold text-center">Sign In</h3>
         <form action="">
