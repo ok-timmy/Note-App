@@ -41,13 +41,13 @@ function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center xs:h-auto xs:py-48 md:min-h-screen bg-gray-100">
-      <div className="px-8 py-6 lg:w-auto xs:w-96 text-left bg-white shadow-lg">
-        <h3 className="text-2xl font-bold text-center">Sign In</h3>
+    <div className="flex items-center justify-center xs:h-auto xs:py-12  bg-gray-100">
+      <div className="px-8 py-6  xs:w-96 text-left bg-white shadow-lg">
+        <h3 className="text-5xl font-semibold text-center">Sign In</h3>
         <form action="">
           <div className="mt-4">
             <div>
-              <label className="block" htmlFor="email">
+              <label className="block text-2xl" htmlFor="email">
                 Email
               </label>
               <input
@@ -60,7 +60,7 @@ function Login() {
               />
             </div>
             <div className="mt-4">
-              <label className="block" htmlFor="password">
+              <label className="block text-2xl" htmlFor="password">
                 Password
               </label>
               <input
