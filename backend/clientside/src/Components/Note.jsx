@@ -18,7 +18,7 @@ function Note({ mynote }) {
 
   return (
     <>
-        <div key={mynote._id} className="p-6 bg-gray-300 rounded-lg shadow-lg">
+        <div key={mynote._id} className=" break-inside-avoid mb-6 p-6 bg-gray-300 rounded-lg shadow-lg">
           <h3 className="text-2xl font-bold mb-2"> {mynote.title}</h3>
 
           <p className="text-lg leading-6 text-gray-800">

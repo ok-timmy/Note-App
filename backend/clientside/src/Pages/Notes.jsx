@@ -9,6 +9,7 @@ function Notes() {
   const { login } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [mynotes, setMynotes] = useState([]);
+
   useEffect(() => {
     async function fetchPost() {
       try {
@@ -21,9 +22,6 @@ function Notes() {
         const notes = await axios.get(
           `http://localhost:5000/api/my-notes/:${thisVeryUser.email}`
         );
-        // console.log(notes.data.sort((a, b) => {
-        //   return new Date(b.updatedAt) - new Date(a.updatedAt);
-        // }));
 
         login(thisVeryUser);
         setMynotes(
@@ -65,7 +63,7 @@ function Notes() {
   } else {
     return (
       <div>
-        {mynotes.length !== 0 ? (
+        {mynotes?.length ? (
           <div className="container mx-auto md:px-12 xs:px-4">
             <div className="">
               <Link to="/newnote">

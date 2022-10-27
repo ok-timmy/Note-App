@@ -3,7 +3,7 @@ import React from "react";
 function Footer() {
   return (
     
-<footer className="bg-blue-800">
+<footer className="bg-gradient-to-r from-blue-500 to-blue-600">
     <div className="grid grid-cols-2 gap-8 py-8 px-6 md:grid-cols-4">
         <div>
             <h2 className="mb-6 text-sm font-semibold text-white uppercase ">Company</h2>

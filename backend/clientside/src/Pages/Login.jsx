@@ -4,21 +4,22 @@ import Register from "./Register";
 import { UserContext } from "../UserContext";
 // import { axiosInstance } from "../config";
 import axios from "axios";
+import { useEffect } from "react";
 
 function Login() {
   const {login} = useContext(UserContext);
-  const [details, setDetails] = useState({});
+  const [details, setDetails] = useState({email:"", password: ""});
   const [error,setError] = useState(false);
-
+  const navigate = useNavigate()
+  
   function handleChange(evt) {
-    const value = evt.target.value;
-    setDetails({
-      ...details,
-      [evt.target.name]: value,
-    });
+    const {name, value} = evt.target;
+    setDetails((prev)=>({
+      ...prev,
+      [name]: value,
+    }));
   }
-
-  const navigate = useNavigate();
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,7 +43,7 @@ function Login() {
 
   return (
     <div className="flex items-center justify-center xs:h-auto xs:py-12  bg-gray-100">
-      <div className="px-8 py-6  xs:w-96 text-left bg-white shadow-lg">
+      <div className="px-8 py-6 xs:min-w-[100vw] sm:min-w-[50vw] text-left bg-white shadow-lg ">
         <h3 className="text-5xl font-semibold text-center">Sign In</h3>
         <form action="">
           <div className="mt-4">

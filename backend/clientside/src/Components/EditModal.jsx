@@ -20,9 +20,9 @@ const EditModal = ({handleEditMode, mynote}) => {
   
   return (
     <div
-      className=" fixed w-max mx-auto right-0 top-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full"
+      className="fixed lg:w-[36rem] mx-auto right-0 top-0 left-0 z-50 md:inset-0 md:h-full"
     >
-      <div className="relative p-4 w-full max-w-md h-full md:h-auto">
+      <div className="relative p-4 w-full md:h-auto">
         <div className="relative bg-white rounded-lg shadow">
           <button
             type="button"

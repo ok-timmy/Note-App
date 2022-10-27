@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import axios from "axios";
 
 function NewNote() {
-  const [details, setDetails] = useState({});
-  const [notedetails, setNotedetails] = useState({});
+  const [notedetails, setNotedetails] = useState({title: "", description: "", author: "" });
+  const [isError, setisError] = useState(false);
+  const [error, setError] = useState();
 
   const thisUser = localStorage.getItem("user");
   const thisVeryUser = JSON.parse(thisUser);
@@ -15,28 +16,29 @@ function NewNote() {
   console.log(author);
 
   function handleChange(evt) {
-    const value = evt.target.value;
-    setDetails({
-      ...details,
-      [evt.target.name]: value,
-    });
-    setNotedetails({ ...details, author });
+    const {name, value} = evt.target;
+    setNotedetails((prev)=>({
+      ...prev,
+      [name]: value,
+      author
+    }));
   }
 
   const handleSubmit = async (e) => {
-    console.log(details);
     e.preventDefault();
-    console.log(notedetails);
     setNotedetails(notedetails);
-    console.log(notedetails);
 
     try {
-      console.log(details);
+
       const user = await axios.post(
         `http://localhost:5000/api/newnote/:${author}`,
         notedetails
       );
-      user.data && window.location.replace("/notes");
+      if (!user.data) {
+        setError("Problem Creating New Note");
+        setisError(true);
+      }
+      window.location.replace("/notes");
     } catch (error) {
       console.log(error);
     }
@@ -45,8 +47,11 @@ function NewNote() {
   return (
     <div>
       <div>
-        <div className="flex flex-col items-center min-h-screen bg-gray-100 justify-center sm:pt-0">
-          <div className="w-full sm:px-16 sm:py-20 xs:px-8 xs:pt-20 overflow-hidden xs:min-h-screen xs:my-auto sm:h-max bg-white rounded-lg lg:max-w-4xl">
+        <div className="flex flex-col items-center bg-gray-100 justify-center sm:pt-0">
+          <div className="w-full sm:px-16 sm:py-20 xs:px-8 xs:pt-20 overflow-hidden xs:py-8 sm:h-max bg-white rounded-lg lg:max-w-4xl lg:my-4">
+            <span className="text-red-500 text-[0.75rem]">
+              {isError && error}
+            </span>
             <div className="mb-4">
               <h1 className="font-serif text-4xl decoration-gray-400">
                 Write Note
@@ -65,7 +70,7 @@ function NewNote() {
                   </label>
 
                   <input
-                    className="block w-full py-3 px-3 mt-1  rounded-md shadow-sm placeholder:text-gray-400 placeholder:text-right focus:outline-none focus:border-b focus:border-b-black focus:ring-white focus:ring-opacity-50"
+                    className="block w-full py-3 px-3 mt-1  rounded-lg shadow-sm placeholder:text-gray-400 placeholder:text-right focus:outline-none focus:border-b focus:border-b-black focus:ring-white focus:ring-opacity-50"
                     type="text"
                     autoComplete="off"
                     onChange={handleChange}
@@ -79,7 +84,7 @@ function NewNote() {
                 <div className="mt-4">
                   <label
                     className="block text-sm font-bold text-gray-700"
-                    htmlFor="password"
+                    htmlFor="description"
                   >
                     Description
                   </label>
@@ -90,7 +95,7 @@ function NewNote() {
                     rows="5"
                     placeholder="400"
                     maxLength={400}
-                    style={{resize: "none"}}
+                    style={{ resize: "none" }}
                   ></textarea>
                 </div>
 

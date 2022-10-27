@@ -52,8 +52,8 @@ function Register() {
 
   return (
     <div>
-      <div className="flex items-center justify-center xs:h-auto xs:py-12 md:min-h-screen bg-gray-100">
-        <div className="px-8 py-6 mb-4 mx-4 mt-4 text-left bg-white shadow-lg md:w-1/3 lg:w-1/3 sm:w-1/3">
+      <div className="flex items-center justify-center xs:h-auto xs:py-12 md:min-h-screen] bg-gray-100">
+        <div className="px-8 py-6 mb-4 mx-4 mt-4 text-left bg-white shadow-lg md:w-1/3 lg:w-1/3 sm:w-1/3 xs:min-w-[100vw]">
           <h3 className="text-2xl font-bold text-center">Register Now</h3>
           <form action="">
             <div className="mt-4">

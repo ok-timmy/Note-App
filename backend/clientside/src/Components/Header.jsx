@@ -31,14 +31,16 @@ function Header({ prop }) {
   return (
     <>
       <div>
-        <div className=" bg-blue-800 px-4 shadow-md">
+        <div className=" bg-gradient-to-r from-blue-500 to-blue-600 px-4 shadow-md">
           <nav className="2xl:container 2xl:mx-auto sm:py-6 sm:px-7 py-5 px-4">
             {/* For large and Medium-sized Screen */}
             <div className="flex justify-between ">
+              <Link to={'/'}>
               <div className="font-bold text-3xl">
                 <span className="text-white">TM</span>
                 <span className="text-white">NOTES</span>
               </div>
+              </Link>
 
               {Object.keys(userdata).length === 0 &&
               userdata.constructor === Object ? (
@@ -184,3 +186,5 @@ function Header({ prop }) {
 }
 
 export default Header;
+
+

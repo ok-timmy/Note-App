@@ -5,15 +5,15 @@ import MobileNote from "../Images/Mobile-Note.svg";
 function Home() {
   return (
     <div>
-      <main className="h-auto mx-auto px-4 sm:my-24 sm:px-6 md:my-24 lg:my-20 lg:px-10 xl:my-28">
-        <div className=" mx-auto sm:text-center lg:text-center lg:w-max">
-          <h1 className="text-7xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-7xl">
-            <span className="block xl:inline">
+      <main className="h-auto mx-auto px-4 xs:my-24 sm:px-6 lg:my-20 lg:px-10 xl:my-28">
+        <div className=" mx-auto text-center  lg:w-max">
+          <h1 className="text-7xl tracking-tight font-extrabold text-gray-900 xs:text-5xl sm:text-5xl md:text-7xl">
+            <span className=" inline">
               Every Great Idea Started as a
             </span>
-            <span className="block text-blue-600 xl:inline"> Note</span>
+            <span className=" text-blue-600 inline"> Note</span>
           </h1>
-          <p className="mt-3 text-base text-gray-800 sm:mt-5 sm:text-lg sm:max-w-3xl sm:mx-auto md:mt-5 md:text-2xl">
+          <p className="mt-3 text-base text-gray-800 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-2xl">
             Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
             lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
             fugiat aliqua.
@@ -29,12 +29,12 @@ function Home() {
           </div>
         </div>
       </main>
-      <div className="grid grid-cols-2 px-12 mx-auto align-middle bg-slate-50">
+      <div className="grid grid-cols-2 xs:grid-cols-1 xs:px-6 px-12 py-8 mx-auto align-middle bg-slate-50">
         <div className="flex flex-col justify-center place-content-start">
-          <div className="text-5xl text-blue-800 font-bold">
+          <div className="text-5xl xs:text-3xl text-blue-800 font-bold">
             Benefits Of Keeping Track Of Your Notes
           </div>
-          <div className="flex flex-col justify-evenly h-96">
+          <div className="flex flex-col justify-evenly h-96 xs:h-64">
             <div className="flex"><i className="fa fa-check-square text-2xl text-blue-800" aria-hidden="true"></i><p className="text-black text-2xl ml-2">Engages your mind</p></div>
             <div className="flex"><i className="fa fa-check-square text-2xl text-blue-800" aria-hidden="true"></i><p className="text-black text-2xl ml-2">Emphasizes and organizes information</p></div>
             <div className="flex"><i className="fa fa-check-square text-2xl text-blue-800" aria-hidden="true"></i><p className="text-black text-2xl ml-2">Creates a condensed record for study.</p></div>
