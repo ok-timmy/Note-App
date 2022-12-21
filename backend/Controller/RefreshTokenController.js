@@ -2,18 +2,19 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const User = require("../Models/User");
 
-//Login User
-exports.handleRefreshToken = (req, res) => {
-    console.log(req.cookies.jwt);
+//Refresh LoggedIn User
+exports.handleRefreshToken = async(req, res) => {
+    console.log(req.cookies);
   const cookies = req.cookies;
+  console.log("Cookies", cookies);
   if (!cookies.jwt) {
-    console.log("No cookie found")
+    console.log("No cookies found")
     res.sendStatus(401);
   } else {
     console.log(cookies.jwt);
     const refreshToken = cookies.jwt;
 
-    const foundUser = User.findOne({ email: req.body.email });
+    const foundUser = await User.findOne({ refreshToken }).exec();
     if (!foundUser) {
       res.sendStatus(403);
     }
@@ -30,7 +31,7 @@ exports.handleRefreshToken = (req, res) => {
           { expiresIn: "120s" }
         );
 
-        res.json({ accessToken });
+        res.json({ accessToken, });
       }
     );
   }

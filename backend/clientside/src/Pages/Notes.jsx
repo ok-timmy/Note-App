@@ -1,43 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Note from "../Components/Note";
-import { UserContext } from "../UserContext";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useGetnotesQuery } from "../Redux/Notes/noteApiSlice";
+// import { setAllNote } from "../Redux/Notes/noteSlice";
 import AddNote from "../Images/Add-Note.svg";
+import { setCurrentUser } from "../Redux/Auth/authSlice";
 
 function Notes() {
-  const { login } = useContext(UserContext);
-  const [loading, setLoading] = useState(true);
-  const [mynotes, setMynotes] = useState([]);
+  const [changeOccured, setChangeOccured] = useState(false);
+  const user = useSelector(setCurrentUser);
+  // console.log(user);
 
-  useEffect(() => {
-    async function fetchPost() {
-      try {
-        const thisUser = localStorage.getItem("user");
-        const thisVeryUser = JSON.parse(thisUser);
-        console.log(thisVeryUser);
-        if (thisVeryUser === null) {
-          window.location.replace("/login");
-        }
-        const notes = await axios.get(
-          `http://localhost:5000/api/my-notes/:${thisVeryUser.email}`
-        );
+  const { data: usersNote, isLoading, isError } = useGetnotesQuery(user);
+  // console.log(usersNote, isLoading, isSuccess, isError);
 
-        login(thisVeryUser);
-        setMynotes(
-          notes.data.sort((a, b) => {
-            return new Date(b.updatedAt) - new Date(a.updatedAt);
-          })
-        );
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchPost();
-  }, []);
+  useEffect(() => {console.log(changeOccured);}, [changeOccured]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex flex-col justify-center my-16">
         <div className="mx-auto" role="status">
@@ -60,10 +40,21 @@ function Notes() {
         </div>
       </div>
     );
-  } else {
+  } else if (isError) {
     return (
+      <div className="container mx-auto md:px-12 xs:px-4">
+        <div className="text-center">
+          {" "}
+          Sorry, We Could not fetch Your Notes. Please try Again
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
       <div>
-        {mynotes?.length ? (
+        {usersNote?.length ? (
           <div className="container mx-auto md:px-12 xs:px-4">
             <div className="">
               <Link to="/newnote">
@@ -74,8 +65,15 @@ function Notes() {
             </div>
             <div className="">
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 pt-5 pb-10 lg:pt-10 lg:pb-20">
-                {mynotes.map((mynote) => {
-                  return <Note key={mynote._id} mynote={mynote} />;
+                {usersNote.map((mynote) => {
+                  return (
+                    <Note
+                      key={mynote._id}
+                      mynote={mynote}
+                      changeOccured={changeOccured}
+                      setChangeOccured={setChangeOccured}
+                    />
+                  );
                 })}
               </div>
             </div>
@@ -86,8 +84,7 @@ function Notes() {
               <img src={AddNote} alt="addnote" />
             </div>
             <h2 className="text-3xl align-middle">
-              Create Your First Note{" "}
-              <span className="text-blue-800"> Note </span>
+              Create Your First <span className="text-blue-800"> Note </span>
             </h2>
             <div className=" mx-auto my-6">
               <Link to="/newnote">
@@ -99,8 +96,8 @@ function Notes() {
           </div>
         )}
       </div>
-    );
-  }
+    </>
+  );
 }
 
 export default Notes;

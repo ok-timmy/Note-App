@@ -1,20 +1,26 @@
-import React, { useState } from "react";
-import { Route, Routes, Link } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import Login from "./Login";
-// import { axiosInstance } from "../config";
-import axios from "axios";
+import { useRegisterMutation } from "../Redux/Auth/authApiSlice";
 
 function Register() {
-  const [details, setDetails] = useState({});
+  const [details, setDetails] = useState({name: "", email: "", password: "", password2: ""});
   const [nameerror, setNameerror] = useState(false);
   const [passworderror, setPassworderror] = useState(false);
   const [emailerror, setEmailerror] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("")
+  const nameRef = useRef();
+  const emailRef = useRef();
+  const pwdRef = useRef();
+  const [register, { isLoading }] =
+    useRegisterMutation();
+    const navigate = useNavigate();
 
   function handleChange(evt) {
-    const value = evt.target.value;
+    const { name, value } = evt.target;
     setDetails({
       ...details,
-      [evt.target.name]: value,
+      [name]: value,
     });
   }
 
@@ -32,29 +38,55 @@ function Register() {
     }
   }
 
+  useEffect(() => {
+    nameRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    setEmailerror(false);
+    setNameerror(false);
+    setPassworderror(false);
+  }, [details]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    !details.hasOwnProperty("name") && setNameerror(true);
-    !details.hasOwnProperty("password") && setPassworderror(true);
-    !details.hasOwnProperty("email") && setEmailerror(true);
+    let nameerr, passworderr, emailerr;
+    !details.hasOwnProperty("name") && (nameerr = true) && setNameerror(true);
+    !details.hasOwnProperty("password") &&
+      (passworderr = true) &&
+      setPassworderror(true);
+    !details.hasOwnProperty("email") &&
+      (emailerr = true) &&
+      setEmailerror(true);
+    console.log(nameerror);
+    if (emailerr || nameerr || passworderr) {
+      // console.log(emailerr, nameerr, passworderr);
+      return;
+    } else {
+      try {
+        const { password2, ...userDetails} = details
+         await register({ ...userDetails }).unwrap();
+         setDetails({
+          name: "",
+          email: "",
+          password: "",
+          password2: ""
+         });
+         navigate("/login")
 
-    try {
-      console.log(details);
-      const user = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        details
-      );
-      user.data && window.location.replace("/login");
-    } catch (error) {
-      console.log(error);
+      } catch (err) {
+       setErrorMessage(err.data.message)
+      }
     }
   };
 
   return (
     <div>
-      <div className="flex items-center justify-center xs:h-auto xs:py-12 md:min-h-screen] bg-gray-100">
-        <div className="px-8 py-6 mb-4 mx-4 mt-4 text-left bg-white shadow-lg md:w-1/3 lg:w-1/3 sm:w-1/3 xs:min-w-[100vw]">
-          <h3 className="text-2xl font-bold text-center">Register Now</h3>
+      <div className="flex items-center justify-center xs:h-auto md:py-12  md:min-h-screen xs:px-12 bg-gray-100">
+        <div className="px-8 py-6 mx-4 md:my-4 text-left bg-white shadow-lg xs:min-w-[100vw] sm:min-w-[50vw] md:min-w-[30vw] md:rounded-lg">
+          <h3 className="md:text-5xl xs:text-3xl font-bold text-center mb-12">
+            Register
+          </h3>
           <form action="">
             <div className="mt-4">
               <div>
@@ -67,7 +99,9 @@ function Register() {
                   name="name"
                   onChange={handleChange}
                   required="required"
-                  className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                  value={details.name}
+                  ref={nameRef}
+                  className={`w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 ${nameerror ===true && "outline-none ring-1 ring-red-500 " }`}
                 />
                 {nameerror ? (
                   <span className="text-xs text-red-400">
@@ -84,14 +118,17 @@ function Register() {
                   placeholder="Email"
                   name="email"
                   required="required"
+                  ref={emailRef}
+                  value={details.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                  className={`w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 ${emailerror ===true && "outline-none ring-1 ring-red-500 " }`}
                 />
                 {emailerror ? (
                   <span className="text-xs text-red-400">
                     Field Cannot be Empty!
                   </span>
                 ) : null}
+                {errorMessage && <div id="message" className="text-xs text-red-400">{errorMessage}</div>}
               </div>
               <div className="mt-4">
                 <label className="block">Password</label>
@@ -101,8 +138,10 @@ function Register() {
                   id="password"
                   name="password"
                   required="required"
+                  ref={pwdRef}
+                  value={details.password}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                  className={`w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 ${passworderror ===true && "outline-none ring-1 ring-red-500 " }`}
                 />
                 {passworderror ? (
                   <span className="text-xs text-red-400">
@@ -118,20 +157,23 @@ function Register() {
                   id="password2"
                   name="password2"
                   required="required"
+                  value={details.password2}
+                  onChange={handleChange}
                   onKeyUp={checkPassword}
-                  className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                  className={`w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 ${passworderror ===true && "outline-none ring-1 ring-red-500 " }`}
                 />
               </div>
               <span id="message" className="text-xs text-red-400"></span>
+              
               <div className="flex">
                 <button
                   className="w-full px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900"
                   onClick={handleSubmit}
                 >
-                  Create Account
+                  {isLoading? "Loading..." : "Create Account"}
                 </button>
               </div>
-              <div className="mt-6 text-grey-dark">
+              <div className="md:mt-6 text-grey-dark">
                 Already have an account?
                 <Link to="/login">
                   {" "}

@@ -23,10 +23,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use("/api/auth", AuthRoute);
 app.use("/logout", LogoutRoute)
+app.use(verifyJWT);
 app.use("/refresh", RefreshRoute)
 
 
-app.use(verifyJWT);
 app.use("/api", NoteRoute);
 
 app.use(express.static(path.join(__dirname, "./clientside/build")));

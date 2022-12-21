@@ -1,25 +1,54 @@
-import axios from "axios";
 import React from "react";
+// import { setNotes} from "../Redux/Notes/noteSlice";
+import { useDeleteNoteMutation } from "../Redux/Notes/createNoteSlice";
 
-const DeleteModal = ({ handleConfirmDelete, mynote }) => {
-  function refresh() {
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  }
+
+const DeleteModal = ({ handleConfirmDelete, mynote, setChangeOccured, changeOccured }) => {
+
+  const [ deleteNote, {isLoading, isSuccess, isError}] = useDeleteNoteMutation();
+
+  // function refresh() {
+  //   setTimeout(() => {
+  //     window.location.reload();
+  //   }, 1000);
+  // }
 
   const handleDelete = async () => {
-    console.log(mynote);
+    // console.log(mynote._id);
     try {
-      await axios
-        .delete(`http://localhost:5000/api/${mynote._id}`)
-        .then(refresh());
-      console.log("Successfully deleted");
-    } catch (error) {
-      console.log(error);
+       await deleteNote(mynote._id).unwrap();
+      console.log("Has been Deleted Successfully",isSuccess);
+      handleConfirmDelete();
+      setChangeOccured(!changeOccured);
+    } catch (err) {
+      
+      console.log(err);
     }
   };
 
+  if(isError) {
+    return (
+      <div className="fixed w-max mx-auto right-0 top-0 left-0 z-50 md:inset-0 h-modal md:h-full">
+      <div className="relative p-4 w-full max-w-md h-full md:h-auto">
+        <div className="relative bg-white rounded-lg shadow ">
+        
+          <div className="p-6 text-center">
+            <h3 className="mb-5 text-lg font-normal text-gray-500">
+             An Error Occurred! Could Not Delete This Note, Please Try Again.
+            </h3>
+            <button
+              type="button"
+              onClick={handleConfirmDelete}
+              className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 "
+            >
+              Close Modal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    )
+  }
 
   return (
     <div className="fixed w-max mx-auto right-0 top-0 left-0 z-50 md:inset-0 h-modal md:h-full">
@@ -57,7 +86,7 @@ const DeleteModal = ({ handleConfirmDelete, mynote }) => {
               onClick={handleDelete}
               className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300  font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
             >
-              Yes, I'm sure
+              {isLoading? "Deleting....." : "Yes, I'm sure"}
             </button>
             <button
               type="button"

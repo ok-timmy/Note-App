@@ -6,22 +6,35 @@ const User = require("../Models/User");
 
 //Create User
 exports.createUser = async (req, res) => {
-  try {
-    const salt = 10;
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    const newUser = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: hashedPassword,
-    });
-    console.log(newUser);
-    const user = await newUser.save();
-    res.status(200).json(user);
-    console.log("User Created Successfully!");
-  } catch (error) {
-    res.status(500).json(error.code);
-    console.log(error);
-    console.log("User Not Created!!");
+  const {name, email, password} = req.body
+  const isExisting = await User.findOne({email});
+  
+  if(isExisting) {
+    res.status(409).json({statusCode: 409, message: "This Email Already exists"});
+  }
+
+  else {
+
+    try {
+      const salt = 10;
+      const hashedPassword = await bcrypt.hash(password, salt);
+      const newUser = new User({
+        name,
+        email,
+        password: hashedPassword,
+      });
+      console.log(newUser);
+      const user = await newUser.save();
+      res.json({
+        status: 200,
+        message: "User Created Successfully"
+      });
+      console.log("User Created Successfully!");
+    } catch (error) {
+      res.status(500).json(error.code);
+      console.log(error);
+      console.log("User Not Created!!");
+    }
   }
 };
 
@@ -38,8 +51,8 @@ exports.loginUser = async (req, res) => {
       const validUser = await bcrypt.compare(req.body.password, user.password);
       console.log(validUser);
       if (validUser) {
-        // console.log(user);
         console.log("User is found");
+        console.log(user);
 
         const accessToken = jwt.sign(
           { username: user.email },
@@ -55,17 +68,23 @@ exports.loginUser = async (req, res) => {
 
         console.log(accessToken);
         console.log(refreshToken);
-        res.cookie("jwt", refreshToken, {
+
+        user.refreshToken = refreshToken;
+       const result = await user.save();
+       console.log("User Model Updated", result);
+
+
+        res.cookie("jwt", accessToken, {
           httpOnly: true,
           maxAge: 1000 * 24 * 60 * 60,
-          sameSite: "None",
-          secure: true,
+          // sameSite: "None",
+          // secure: true,  This has to be in production mode
         });
         console.log("cookie created!!");
 
         const { email, name } = user;
 
-        res.status(200).json({ email, name, accessToken });
+        res.status(200).json({ email, accessToken });
       } else res.status(400).json("Wrong Password");
     } else res.status(400).json("User Does Not exist");
   } catch (error) {

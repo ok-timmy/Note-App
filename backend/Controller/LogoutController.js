@@ -1,7 +1,7 @@
 const User = require("../Models/User");
 
 //Logout User
-exports.handleLogout = (req, res) => {
+exports.handleLogout = async(req, res) => {
   //On Client side, delete the access token too.
 
   const cookies = req.cookies;
@@ -11,12 +11,17 @@ exports.handleLogout = (req, res) => {
   } else {
     console.log(cookies.jwt);
 
-    const foundUser = User.findOne({ email: req.body.email });
+    const refreshToken = cookies.jwt
+
+    const foundUser =await User.findOne({ refreshToken }).exec();
     if (!foundUser) {
       // Cookie is found but does not match the user details.
-      res.clearCookie("jwt", { httpOnly: true });
+      res.clearCookie("jwt", { httpOnly: true, sameSite: none, secure: true });
       res.sendStatus(204); // All cookies is cleared
     }
+
+    foundUser.refreshToken = '';
+    await foundUser.save();
 
     res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
     res.sendStatus(204);
