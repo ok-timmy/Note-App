@@ -15,7 +15,6 @@ function Notes() {
   const { data: usersNote, isLoading, isError } = useGetnotesQuery(user);
   // console.log(usersNote, isLoading, isSuccess, isError);
 
-  useEffect(() => {console.log(changeOccured);}, [changeOccured]);
 
   if (isLoading) {
     return (

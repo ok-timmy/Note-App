@@ -15,7 +15,7 @@ const EditModal = ({handleEditMode, mynote, setChangeOccured, changeOccured}) =>
     try {
       console.log(isLoading);
       console.log("Successfully edited", isLoading);
-      const newNotes = await editNote({id: mynote._id, title, description}).unwrap();
+      const newNotes = await editNote({id: mynote._id, title, description}).unwrap().finally();
       dispatch(setNotes({...newNotes}))
       console.log("Has been Edited Successfully",isSuccess);
       handleEditMode();
