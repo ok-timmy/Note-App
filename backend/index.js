@@ -22,7 +22,9 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-  console.log("Server is running!");
+  return res.status(200).json({
+    message: "This app is working normally now"
+  })
 });
 
 app.use("/api/auth", AuthRoute);
