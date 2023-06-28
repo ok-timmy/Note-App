@@ -7,6 +7,7 @@
     "start": "node index.js",
     "restart": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm build",
     "heroku-postbuild": "cd clientside && npm install && npm run build"
   },
   "author": "",
