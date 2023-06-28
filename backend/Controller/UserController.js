@@ -23,17 +23,20 @@ exports.createUser = async (req, res) => {
         email,
         password: hashedPassword,
       });
-      console.log(newUser);
+      // console.log(newUser);
       const user = await newUser.save();
       res.json({
         status: 200,
         message: "User Created Successfully"
       });
-      console.log("User Created Successfully!");
+      // console.log("User Created Successfully!");
     } catch (error) {
       res.status(500).json(error.code);
-      console.log(error);
-      console.log("User Not Created!!");
+      // console.log(error);
+      // console.log("User Not Created!!");
+      return res.status(500).json({
+        message: "An error occured, try again"
+      })
     }
   }
 };
@@ -46,13 +49,13 @@ exports.loginUser = async (req, res) => {
 
     // console.log(user);
     if (user) {
-      console.log(user.email, req.body.password);
+      // console.log(user.email, req.body.password);
 
       const validUser = await bcrypt.compare(req.body.password, user.password);
-      console.log(validUser);
+      // console.log(validUser);
       if (validUser) {
-        console.log("User is found");
-        console.log(user);
+        // console.log("User is found");
+        // console.log(user);
 
         const accessToken = jwt.sign(
           { username: user.email },
@@ -66,19 +69,19 @@ exports.loginUser = async (req, res) => {
           { expiresIn: "1d" }
         );
 
-        console.log(accessToken);
-        console.log(refreshToken);
+        // console.log(accessToken);
+        // console.log(refreshToken);
 
         user.refreshToken = refreshToken;
        const result = await user.save();
-       console.log("User Model Updated", result);
+      //  console.log("User Model Updated", result);
 
 
         res.cookie("jwt", accessToken, {
           httpOnly: true,
           maxAge: 1000 * 24 * 60 * 60,
-          // sameSite: "None",
-          // secure: true,  This has to be in production mode
+          sameSite: "None",
+          secure: true, 
         });
         console.log("cookie created!!");
 
